@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.vite/
+.pnpm-store/
+*.log
+
+ECGenius_Design_Specification.txt
+ECGenius_Master_App_Specification.txt
