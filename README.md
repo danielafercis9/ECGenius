@@ -5,8 +5,6 @@ ECGenius is a responsive, Duolingo-inspired ECG learning application for student
 ## Source of truth
 
 - `pathologies_with_classifier.json` supplies all pathology content and classifier rules.
-- `ECGenius_Master_App_Specification.txt` defines product behavior.
-- `ECGenius_Design_Specification.txt` defines the visual system.
 - `assets/characters/` contains the supplied character SVGs.
 
 The React adapter in `src/data/appData.js` normalizes the source JSON at runtime. Medical content is not duplicated in components.
