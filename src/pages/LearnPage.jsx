@@ -5,6 +5,8 @@ import { PageHeader } from '../components/AppShell'
 import { Character } from '../components/Character'
 import { Icon } from '../components/Icon'
 import { ProgressBar } from '../components/Shared'
+import { learnPathDecorations } from '../data/learnPathDecorations'
+import { resolveExactCharacterAsset } from '../data/characterAssets'
 
 export function LearnPage() {
   const { completedIds, appState } = useApp()
@@ -25,8 +27,10 @@ export function LearnPage() {
             const available = pathology.order === 1 || completedIds.has(pathologies[pathology.order - 2]?.id)
             const current = !completed && pathology.order - 1 === currentIndex
             const state = completed ? 'completed' : current ? 'current' : available ? 'available' : 'locked'
+            const decoration = learnPathDecorations.find((item) => item.anchorPathologyId === id)
             return <li key={id} className={`node-row offset-${(pathology.order - 1) % 3}`}>
               <div className="node-connector"/>
+              {decoration && <PathDecoration decoration={decoration}/>}
               {available || completed ? <Link className={`lesson-node ${state}`} to={`/learn/${id}`} aria-label={`${pathology.fullName}, ${state}`}><span className="node-order">{completed ? <Icon name="check"/> : pathology.order}</span><span className="node-label">{current ? 'CURRENT' : completed ? 'COMPLETE' : 'AVAILABLE'}</span><span className="node-popover"><strong>{pathology.fullName}</strong><small>{pathology.shortName}</small><b>{completed ? 'Review lesson' : 'Start lesson'} →</b></span></Link> : <button className="lesson-node locked" disabled aria-label={`${pathology.fullName}, locked`}><span className="node-order"><Icon name="lock"/></span><span className="node-label">LOCKED</span><span className="node-popover"><strong>{pathology.fullName}</strong><small>Complete the previous lesson to unlock.</small></span></button>}
             </li>
           })}
@@ -37,3 +41,7 @@ export function LearnPage() {
   </div>
 }
 
+function PathDecoration({ decoration }) {
+  if (!resolveExactCharacterAsset(decoration.characterId, decoration.pose)) return null
+  return <div className={`path-decoration side-${decoration.side}`}><Character id={decoration.characterId} pose={decoration.pose} decorative/></div>
+}

@@ -29,7 +29,6 @@ export const pathologies = rawData.pathologies.map((item, index) => ({
   shortName: item.short_name,
   moduleId: `module-${Number(item.module.match(/MODULE\s+(\d+)/i)?.[1] || 1)}`,
   characterId: characterIds[item.character] || 'doctor01',
-  videoUrl: item.video_url,
   characteristics: item.ecg_characteristics.map(splitCharacteristic),
   symptoms: item.clinical_signs_symptoms,
   keyLearningPoints: item.key_learning_points,
@@ -73,4 +72,3 @@ export function validateData() {
 }
 
 export const dataValidationErrors = validateData()
-

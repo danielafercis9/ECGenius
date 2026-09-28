@@ -11,6 +11,10 @@ const paths = {
   check: <path d="m5 12 4 4L19 6"/>,
   lock: <><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></>,
   play: <path d="m8 5 11 7-11 7V5Z"/>,
+  pause: <path d="M9 5v14M15 5v14"/>,
+  replay: <><path d="M4 10a8 8 0 1 1 2 8"/><path d="M4 10V4M4 10h6"/></>,
+  volume: <><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/></>,
+  muted: <><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="m16 10 5 5M21 10l-5 5"/></>,
   arrow: <path d="m9 18 6-6-6-6"/>,
   search: <><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></>,
   heart: <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/>,
@@ -20,4 +24,3 @@ const paths = {
 export function Icon({ name, size = 22 }) {
   return <svg className="icon" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>
 }
-

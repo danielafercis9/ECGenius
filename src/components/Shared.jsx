@@ -1,15 +1,9 @@
-import { toYouTubeEmbed } from '../utils/video'
 import { Character } from './Character'
 import { Icon } from './Icon'
 
 export function ProgressBar({ value, max, label }) {
   const percent = max ? Math.round((value / max) * 100) : 0
   return <div className="progress-wrap" aria-label={`${label}: ${value} of ${max}`}><div className="progress-meta"><span>{label}</span><strong>{value} / {max}</strong></div><div className="progress-track"><span style={{ width: `${percent}%` }} /></div></div>
-}
-
-export function VideoPanel({ pathology }) {
-  if (!pathology?.videoUrl) return <div className="empty-state">Rhythm video unavailable.</div>
-  return <div className="video-frame"><iframe src={toYouTubeEmbed(pathology.videoUrl)} title={`${pathology.fullName} rhythm video`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen /></div>
 }
 
 export function Disclaimer() {
@@ -25,4 +19,3 @@ export function EmptyValue() { return <p className="muted">Information not avail
 export function CharacterCallout({ pose = 'presenting', children, title, id = 'mascotCat' }) {
   return <div className="character-callout"><Character id={id} pose={pose} alt=""/><div><strong>{title}</strong><p>{children}</p></div></div>
 }
-

@@ -3,8 +3,9 @@ import { classifierSchema, getPathology, pathologies } from '../data/appData'
 import { classifyRhythm } from '../utils/classifier'
 import { PageHeader } from '../components/AppShell'
 import { Character } from '../components/Character'
+import { EcgVideo } from '../components/EcgVideo'
 import { Icon } from '../components/Icon'
-import { Disclaimer, VideoPanel } from '../components/Shared'
+import { Disclaimer } from '../components/Shared'
 import { Tabs } from '../components/Tabs'
 
 const humanize = (value) => value.replaceAll('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase())
@@ -57,7 +58,7 @@ function Result({ result, pathology, inputMap, activeTab, setActiveTab, onReset 
   if (!pathology) return null
   const top = result.ranked[0]
   return <div className="result-content"><div className={`result-status ${result.status}`}><span>{result.status === 'strong_match' ? 'STRONG PATTERN MATCH' : 'AMBIGUOUS · MORE INFORMATION NEEDED'}</span><h2>{result.status === 'strong_match' ? 'Pattern most consistent with' : 'Leading possible matches'}</h2></div>{result.status === 'strong_match' ? <div className="result-title"><div><h3>{pathology.fullName}</h3><span className="short-badge">{pathology.shortName}</span></div><strong>{top.score}<small>/100</small><em>Pattern match score</em></strong></div> : <><div className="candidate-list">{result.ranked.map((candidate) => { const p = getPathology(candidate.id); return <div key={candidate.id}><span><strong>{p.fullName}</strong><small>{p.shortName}</small></span><b>{candidate.score}/100</b></div> })}</div><MissingList result={result} inputMap={inputMap}/></>}
-    <VideoPanel pathology={pathology}/><div className="why-box"><h3>Why this prediction?</h3>{[...top.matchedRequired, ...top.matchedSupporting].length ? <ul>{[...top.matchedRequired, ...top.matchedSupporting].map((rule) => <li key={`${rule.feature}-${rule.explanation}`}><Icon name="check"/><span><strong>{inputMap.get(rule.feature)?.label}</strong>{rule.explanation}</span></li>)}</ul> : <p>More matched criteria are needed.</p>}{top.ambiguityNote && <p className="ambiguity-note">{top.ambiguityNote}</p>}</div>
+    <EcgVideo pathologyId={pathology.id} playbackMode="manual" preload="metadata"/><div className="why-box"><h3>Why this prediction?</h3>{[...top.matchedRequired, ...top.matchedSupporting].length ? <ul>{[...top.matchedRequired, ...top.matchedSupporting].map((rule) => <li key={`${rule.feature}-${rule.explanation}`}><Icon name="check"/><span><strong>{inputMap.get(rule.feature)?.label}</strong>{rule.explanation}</span></li>)}</ul> : <p>More matched criteria are needed.</p>}{top.ambiguityNote && <p className="ambiguity-note">{top.ambiguityNote}</p>}</div>
     <Tabs tabs={resultTabs} active={activeTab} onChange={setActiveTab} ariaLabel="Prediction information"/><div className="result-tab" role="tabpanel">{activeTab === 'interpretation' ? pathology.diagnosis : activeTab === 'symptoms' ? pathology.symptoms : pathology[activeTab]}</div><button className="button secondary full" onClick={onReset}>Try another rhythm</button><p className="score-note">Scores compare matched supporting rule weights. They are not probability, confidence, diagnostic accuracy, or the chance a patient has this rhythm.</p></div>
 }
 
@@ -65,4 +66,3 @@ function MissingList({ result, inputMap }) {
   if (!result.missingFeatures?.length) return null
   return <div className="missing-list"><strong>Review or add:</strong><ul>{result.missingFeatures.slice(0, 4).map((id) => <li key={id}>{inputMap.get(id)?.label || humanize(id)}</li>)}</ul></div>
 }
-

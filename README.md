@@ -1,6 +1,6 @@
 # ECGenius
 
-ECGenius is a responsive, Duolingo-inspired ECG learning application for students. It includes a 27-rhythm course path, reusable five-step lessons, a reference browser, an interpretable rule-based pattern matcher, an ECG fundamentals guide, and a Challenge integration route.
+ECGenius is a responsive, Duolingo-inspired ECG learning application for students. It includes a 27-rhythm course path, reusable five-step lessons, a reference browser, an interpretable rule-based pattern matcher, an ECG fundamentals guide, and a randomized three-ward hospital Challenge.
 
 ## Source of truth
 
@@ -38,9 +38,8 @@ The pure engine in `src/utils/classifier.js` evaluates every pathology’s confi
 
 The included workflow at `.github/workflows/deploy.yml` builds and publishes `dist/` whenever the default branch is pushed. In the GitHub repository settings, set **Pages → Source** to **GitHub Actions**. The Vite base is relative and character assets are copied into the static bundle.
 
-## Challenge integration
+## Hospital Challenge
 
-`#/challenge` is a polished unavailable state for now. Replace the body of `ChallengePage` with the future game component or URL while keeping the route and shared data adapter unchanged.
+`#/challenge` contains a three-ward, 15-encounter hospital game. Each run randomizes rhythm and patient assignments, adds two targeted review cases from the player's mistakes, and ends with a timed diagnosis. The plan, hearts, XP, ward completion, review assignments, and final result persist under a separate versioned localStorage key, so refreshing never reshuffles an active run and restarting Challenge never alters Learn or Practice progress.
 
 > ECGenius is an educational simulation only. It is not a substitute for professional clinical diagnosis, medical advice, or treatment.
-

@@ -1,7 +1,26 @@
-export function toYouTubeEmbed(url) {
-  try {
-    const parsed = new URL(url)
-    const id = parsed.hostname.includes('youtu.be') ? parsed.pathname.slice(1) : parsed.searchParams.get('v')
-    return id ? `https://www.youtube-nocookie.com/embed/${id}` : url
-  } catch { return url }
+const preloadedVideos = new Map()
+
+export function getRhythmVideoSrc(pathologyId) {
+  if (!pathologyId) return null
+  return `${import.meta.env.BASE_URL}videos/${pathologyId}.mp4`
+}
+
+export function preloadRhythmVideo(pathologyId, preload = 'metadata') {
+  const src = getRhythmVideoSrc(pathologyId)
+  if (!src || typeof document === 'undefined' || preloadedVideos.has(src)) return
+
+  const video = document.createElement('video')
+  video.preload = preload
+  video.src = src
+  video.load()
+  preloadedVideos.set(src, video)
+
+  // Keep only a small rolling window; the course should never preload all 27 clips.
+  if (preloadedVideos.size > 3) {
+    const oldestSrc = preloadedVideos.keys().next().value
+    const oldestVideo = preloadedVideos.get(oldestSrc)
+    oldestVideo?.removeAttribute('src')
+    oldestVideo?.load()
+    preloadedVideos.delete(oldestSrc)
+  }
 }
